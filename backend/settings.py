@@ -76,6 +76,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'project4-frontend.railway.internal',
+    'project4-backend-production-98e2.up.railway.app',
+    'https://*project4-backend-production-98e2.up.railway.app',
+    'https://*.railway.app/'
+]
 
 
 # CORS_ALLOW_ALL_ORIGINS = True
