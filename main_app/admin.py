@@ -5,7 +5,7 @@ from .models import *
 admin.site.register(Goal)
 admin.site.register(Tag)
 admin.site.register(Habit)
-admin.site.register(CompletedGoal)
+# admin.site.register(CompletedGoal)
 admin.site.register(CompletedHabit)
 
 

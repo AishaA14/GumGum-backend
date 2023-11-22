@@ -26,8 +26,9 @@ router.register(r'groups', views.GroupViewSet)
 router.register(r'tag', views.TagViewSet)
 router.register(r'goal', views.GoalViewSet)
 router.register(r'habit', views.HabitViewSet)
-router.register(r'completedgoal', views.CompletedGoalViewSet)
+# router.register(r'completedgoal', views.CompletedGoalViewSet)
 router.register(r'completedhabit', views.CompletedHabitViewSet)
+# router.register(r'completedhabit', views.CompletedHabitViewSet)
 
 
 
@@ -38,6 +39,13 @@ urlpatterns = [
     path('signup/', views.SignUpView.as_view(), name='signup'),
     path('home/', views.HomeView.as_view(), name ='home'),
     path('logout/', views.LogoutView.as_view(), name ='logout'),
+
+    path('goal/<int:pk>/', views.GoalViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='goal_detail'),
+    path('goal/create/', views.GoalCreate.as_view(), name='goal_create'),
+
+    path('habit/goal/<int:pk>/', views.HabitViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='habit_detail'),
+    path('habit/create/', views.HabitCreate.as_view(), name='habit_create'),
+
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

@@ -30,16 +30,17 @@ class GoalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Goal
         fields = '__all__'
+        read_only_fields = ['user']
 
 class HabitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Habit
         fields = '__all__'
 
-class CompletedGoalSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CompletedGoal
-        fields = '__all__'
+# class CompletedGoalSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CompletedGoal
+#         fields = '__all__'
 
 class CompletedHabitSerializer(serializers.ModelSerializer):
     class Meta:

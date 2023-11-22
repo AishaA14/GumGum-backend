@@ -5,6 +5,7 @@ from django.contrib.auth.models import User, Group
 from .models import *
 from rest_framework import viewsets, permissions, status, generics
 from rest_framework.views import APIView
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import *
@@ -58,77 +59,26 @@ class GoalViewSet(viewsets.ModelViewSet):
     serializer_class = GoalSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def list(self, request):
-        queryset = Goal.objects.filter(user=request.user)
-        serializer = GoalSerializer(queryset, many=True)
-        return Response(serializer.data)
+class GoalCreate(generics.CreateAPIView):
+    queryset = Goal.objects.all()
+    serializer_class = GoalSerializer
 
-    def create(self, request):
-        serializer = GoalSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def retrieve(self, request, pk=None):
-        queryset = Goal.objects.filter(user=request.user, pk=pk)
-        goal = get_object_or_404(queryset, pk=pk)
-        serializer = GoalSerializer(goal)
-        return Response(serializer.data)
-
-    def update(self, request, pk=None):
-        goal = Goal.objects.get(pk=pk)
-        serializer = GoalSerializer(goal, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def destroy(self, request, pk=None):
-        goal = Goal.objects.get(pk=pk)
-        goal.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class HabitViewSet(viewsets.ModelViewSet):
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def list(self, request):
-        queryset = Habit.objects.filter(user=request.user)
-        serializer = HabitSerializer(queryset, many=True)
-        return Response(serializer.data)
+class HabitCreate(generics.CreateAPIView):
+    queryset = Habit.objects.all()
+    serializer_class = GoalSerializer
 
-    def create(self, request):
-        serializer = HabitSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def retrieve(self, request, pk=None):
-        queryset = Habit.objects.filter(user=request.user, pk=pk)
-        habit = get_object_or_404(queryset, pk=pk)
-        serializer = HabitSerializer(habit)
-        return Response(serializer.data)
-
-    def update(self, request, pk=None):
-        habit = Habit.objects.get(pk=pk)
-        serializer = HabitSerializer(habit, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def destroy(self, request, pk=None):
-        habit = Habit.objects.get(pk=pk)
-        habit.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-class CompletedGoalViewSet(viewsets.ModelViewSet):
-    queryset = CompletedGoal.objects.all()
-    serializer_class = CompletedGoalSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# class CompletedGoalViewSet(viewsets.ModelViewSet):
+#     queryset = CompletedGoal.objects.all()
+#     serializer_class = CompletedGoalSerializer
+#     permission_classes = [permissions.IsAuthenticated]
 
 class CompletedHabitViewSet(viewsets.ModelViewSet):
     queryset = CompletedHabit.objects.all()
