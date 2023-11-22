@@ -41,7 +41,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [ 
     'project4-backend-production-98e2.up.railway.app', 
-    'project4-frontend.railway.internal'
+    'project4-frontend.railway.internal',
+    'localhost'
+
 ]
 
 
@@ -124,18 +126,19 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['PGDATABASE'],
-        'USER': os.environ['PGUSER'],
-        'PASSWORD': os.environ['PGPASSWORD'],
-        'HOST': os.environ['PGHOST'],
-        'PORT': os.environ['PGPORT']
+        'NAME': 'gumgum',
+        'USER': 'aishaayinde',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
+
+        # 'NAME': os.environ['PGDATABASE'],
+        # 'USER': os.environ['PGUSER'],
+        # 'PASSWORD': os.environ['PGPASSWORD'],
+        # 'HOST': os.environ['PGHOST'],
+        # 'PORT': os.environ['PGPORT']
     }
 } 
-        # 'NAME': 'gumgum',
-        # 'USER': 'aishaayinde',
-        # 'PASSWORD': '',
-        # 'HOST': '127.0.0.1',
-        # 'PORT': '5432'
 
 
 # Password validation
