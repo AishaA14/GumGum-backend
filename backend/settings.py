@@ -67,6 +67,15 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
 ]
 
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "POST",
+    "PUT",
+    "PATCH"
+)
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -82,22 +91,15 @@ MIDDLEWARE = [
 
 # CORS_ALLOW_ALL_ORIGINS = True
 
-# CORS_ALLOW_METHODS = (
-#     "DELETE",
-#     "GET",
-#     "OPTIONS",
-#     "POST",
-#     "PUT",
-# )
 
-# CORS_ALLOW_HEADERS = (
-#     "accept",
-#     "authorization",
-#     "content-type",
-#     "user-agent",
-#     "x-csrftoken",
-#     "x-requested-with",
-# )
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+)
 
 ROOT_URLCONF = 'backend.urls'
 

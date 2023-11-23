@@ -6,10 +6,10 @@ from django.contrib.auth.models import User
 #     username = models.CharField(max_length=255)
 #     email = models.EmailField()
 
-class Tag(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+# class Tag(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     name = models.CharField(max_length=255)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Goal(models.Model):
     id = models.AutoField(primary_key=True)
@@ -36,7 +36,7 @@ class Habit(models.Model):
     frequency_unit = models.CharField(max_length=10, choices=frequency_unit_choices,  default='daily')
     frequency_amount = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    goal = models.ForeignKey(Goal, on_delete=models.CASCADE, null=True, default=None)
+    goal = models.ForeignKey(Goal, on_delete=models.CASCADE, default=2)
 
 # class CompletedGoal(models.Model):
 #     id = models.AutoField(primary_key=True)
@@ -51,3 +51,10 @@ class CompletedHabit(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+class Task(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    is_completed = models.BooleanField(default=False)

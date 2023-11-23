@@ -19,13 +19,16 @@ from django.urls import path, include
 from rest_framework import routers
 from rest_framework_simplejwt import views as jwt_views
 from main_app import views
+from main_app.views import HabitListCreateView, HabitDetailView
+
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'tag', views.TagViewSet)
+# router.register(r'tag', views.TagViewSet)
 router.register(r'goal', views.GoalViewSet)
-router.register(r'habit', views.HabitViewSet)
+router.register(r'task', views.TaskViewSet)
+# router.register(r'habit', views.HabitsForGoalViewSet)
 # router.register(r'completedgoal', views.CompletedGoalViewSet)
 router.register(r'completedhabit', views.CompletedHabitViewSet)
 # router.register(r'completedhabit', views.CompletedHabitViewSet)
@@ -43,8 +46,19 @@ urlpatterns = [
     path('goal/<int:pk>/', views.GoalViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='goal_detail'),
     path('goal/create/', views.GoalCreate.as_view(), name='goal_create'),
 
-    path('habit/goal/<int:pk>/', views.HabitViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='habit_detail'),
-    path('habit/create/', views.HabitCreate.as_view(), name='habit_create'),
+    path('task/<int:pk>/', views.TaskViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='task_detail'),
+    path('task/create/', views.TaskCreate.as_view(), name='task_create'),
+
+
+    # path('goals/<int:goal_pk>/habits/', views.HabitsForGoalViewSet.as_view(), name='habits-for-goal'),
+    # path('habit/goal/<int:pk>/', views.HabitViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='habit_detail'),
+    #  path('habit/create/goal/<int:pk>/', views.HabitCreate.as_view(), name='habit_create'),
+    # path('habits/<int:goal_pk>/', views.HabitListView.as_view(), name='habit_list'),
+
+    path('habits/<int:goal_id>/', HabitListCreateView.as_view(), name='habit-list-create'),
+    # for listing and creating habits
+    path('habits/<int:pk>/', HabitDetailView.as_view(), name='habit-detail'),
+    # for retrieving, updating and deleting a specific habit
 
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
