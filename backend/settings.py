@@ -87,6 +87,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://project4-frontend.railway.internal',
+    'https://project4-backend-production-98e2.up.railway.app',
+    'https://*project4-backend-production-98e2.up.railway.app',
+    'https://*.railway.app/'
+]
 
 
 # CORS_ALLOW_ALL_ORIGINS = True
@@ -128,17 +134,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gumgum',
-        'USER': 'aishaayinde',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
-    # test
-        # 'NAME': os.environ['PGDATABASE'],
-        # 'USER': os.environ['PGUSER'],
-        # 'PASSWORD': os.environ['PGPASSWORD'],
-        # 'HOST': os.environ['PGHOST'],
-        # 'PORT': os.environ['PGPORT']
+        # 'NAME': 'gumgum',
+        # 'USER': 'aishaayinde',
+        # 'PASSWORD': '',
+        # 'HOST': '127.0.0.1',
+        # 'PORT': '5432'
+   
+        'NAME': os.environ['PGDATABASE'],
+        'USER': os.environ['PGUSER'],
+        'PASSWORD': os.environ['PGPASSWORD'],
+        'HOST': os.environ['PGHOST'],
+        'PORT': os.environ['PGPORT']
     }
 } 
 

@@ -17,26 +17,31 @@ class Goal(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     description = models.TextField()
+    goal_duration = models.CharField(max_length=255)
     # tag = models.ManyToManyField(Tag)
-    timeframe = models.CharField(max_length=255)
+    # timeframe = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    # start_date = models.DateTimeField()
+    # end_date = models.DateTimeField()
     completed = models.BooleanField(default=False)
 
 class Habit(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     description = models.TextField()
-    frequency_unit_choices = [
-        ('daily', 'Daily'),
-        ('weekly', 'Weekly'),
-        ('monthly', 'Monthly'),
-    ]
-    frequency_unit = models.CharField(max_length=10, choices=frequency_unit_choices,  default='daily')
-    frequency_amount = models.IntegerField()
+    # frequency_unit_choices = [
+    #     ('daily', 'Daily'),
+    #     ('weekly', 'Weekly'),
+    #     ('monthly', 'Monthly'),
+    # ]
+    # frequency_unit = models.CharField(max_length=10, choices=frequency_unit_choices,  default='daily')
+    # frequency_amount = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    goal = models.ForeignKey(Goal, on_delete=models.CASCADE, default=2)
+    goal = models.ForeignKey(Goal, on_delete=models.CASCADE, default=None)
+    is_completed = models.BooleanField(default=False)
+    # last_completed = models.DateTimeField(null=True, blank=True)
+    # repeat_option = models.CharField(max_length=20, choices=[('daily', 'Daily'), ('weekly', 'Weekly'), ('monthly', 'Monthly'), ('custom', 'Custom')], default='daily')
+    # custom_repeat = models.CharField(max_length=255, blank=True, null=True)
 
 # class CompletedGoal(models.Model):
 #     id = models.AutoField(primary_key=True)
@@ -48,9 +53,8 @@ class Habit(models.Model):
 class CompletedHabit(models.Model):
     id = models.AutoField(primary_key=True)
     habit = models.ForeignKey(Habit, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    completed = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    completed_at = models.DateTimeField(auto_now_add=True)
+    count = models.IntegerField()
 
 class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

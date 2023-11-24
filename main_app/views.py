@@ -39,7 +39,6 @@ class HomeView(APIView):
        return Response(content)
 
 class LogoutView(APIView):
-    # permission_classes = (IsAuthenticated,)
     def post(self, request):
         try:
             refresh_token = request.data["refresh_token"]
@@ -61,7 +60,7 @@ class GoalCreate(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-        
+
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
@@ -93,61 +92,32 @@ class HabitListCreateView(generics.ListCreateAPIView):
         habit = self.get_object(pk=pk)
         return habit
 
-class HabitDetailView(generics.RetrieveUpdateDestroyAPIView):
+class CompletedHabitListCreateView(generics.ListCreateAPIView):
+    serializer_class = CompletedHabitSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        habit_id = self.kwargs['habit_id']
+        return CompletedHabit.objects.filter(habit_id=habit_id)
+
+    def perform_create(self, serializer):
+        habit_id = self.kwargs['habit_id']
+        habit = Habit.objects.get(pk=habit_id)
+        serializer.save(habit=habit)
+
+    def put(self, serializer, pk):
+        completed_habit = self.get_object(pk=pk)
+        return completed_habit
+    
+class HabitDetailViewSet(viewsets.ModelViewSet):
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
     permission_classes = [permissions.IsAuthenticated]
+
 
 class CompletedHabitViewSet(viewsets.ModelViewSet):
     queryset = CompletedHabit.objects.all()
     serializer_class = CompletedHabitSerializer
     permission_classes = [permissions.IsAuthenticated]
-
-# class TagViewSet(viewsets.ModelViewSet):
-#     queryset = Tag.objects.all()
-#     serializer_class = TagSerializer
-#     permission_clases = [permissions.IsAuthenticated]
-
-# class HabitsForGoalViewSet(APIView):
-#     permission_classes = [IsAuthenticated]
-
-#     def get(self, request, goal_id, *args, **kwargs):
-#         try:
-#             goal = Goal.objects.get(id=goal_id)
-#             habits = Habit.objects.filter(goal=goal)
-#             serializer = HabitSerializer(habits, many=True)
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#         except Goal.DoesNotExist:
-#             return Response({'detail': 'Goal not found'}, status=status.HTTP_404_NOT_FOUND)
-
-# class HabitListView(generics.ListAPIView):
-#     serializer_class = HabitSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         goal_pk = self.kwargs.get('goal_pk')
-#         return Habit.objects.filter(goal__pk=goal_pk)
-    
-# class HabitViewSet(viewsets.ModelViewSet):
-#     queryset = Habit.objects.all()
-#     serializer_class = HabitSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-# class HabitCreate(generics.CreateAPIView):
-#     queryset = Habit.objects.all()
-#     serializer_class = HabitSerializer
-
-#     def perform_create(self, serializer):
-#         # Assign the goal based on the goal_pk from the URL
-#         goal_pk = self.kwargs.get('goal_pk')
-#         goal = Goal.objects.get(pk=goal_pk)
-#         serializer.save(goal=goal)
-
-# class CompletedGoalViewSet(viewsets.ModelViewSet):
-#     queryset = CompletedGoal.objects.all()
-#     serializer_class = CompletedGoalSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-
 
 

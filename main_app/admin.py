@@ -5,6 +5,6 @@ from .models import *
 admin.site.register(Goal)
 admin.site.register(Habit)
 admin.site.register(Task)
-admin.site.register(CompletedHabit)
+
 
 
