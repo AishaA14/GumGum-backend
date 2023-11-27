@@ -1,6 +1,3 @@
-import os # environ variables
-import uuid # unique id for each image
-import boto3 # amazon bucket for the images
 from django.contrib.auth.models import User, Group
 from .models import *
 from rest_framework import viewsets, permissions, status, generics
@@ -10,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import *
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_jwt.utils import jwt_decode_handler
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
@@ -39,7 +37,6 @@ class HomeView(APIView):
        return Response(content)
 
 class LogoutView(APIView):
-    # permission_classes = (IsAuthenticated,)
     def post(self, request):
         try:
             refresh_token = request.data["refresh_token"]
@@ -63,8 +60,16 @@ class GoalCreate(generics.CreateAPIView):
     queryset = Goal.objects.all()
     serializer_class = GoalSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        user_id = decode_token(request)  # Use the decode_token function
+        if user_id:
+            request.data['user'] = user_id  # Associate user ID with the goal
+            return super().create(request, *args, **kwargs)
+        else:
+            return Response({'detail': 'Invalid or missing token'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class HabitViewSet(viewsets.ModelViewSet):
     queryset = Habit.objects.all()
@@ -75,16 +80,16 @@ class HabitCreate(generics.CreateAPIView):
     queryset = Habit.objects.all()
     serializer_class = GoalSerializer
 
-# class CompletedGoalViewSet(viewsets.ModelViewSet):
-#     queryset = CompletedGoal.objects.all()
-#     serializer_class = CompletedGoalSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
 class CompletedHabitViewSet(viewsets.ModelViewSet):
     queryset = CompletedHabit.objects.all()
     serializer_class = CompletedHabitSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-
-
-
+def decode_token(request):
+    authorization_header = request.headers.get('Authorization')
+    if authorization_header:
+        token = authorization_header.split(' ')[1]
+        decoded_token = jwt_decode_handler(token)
+        user_id = decoded_token['user_id']
+        return user_id
+    return None
