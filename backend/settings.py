@@ -41,7 +41,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [ 
     'project4-backend-production-98e2.up.railway.app', 
-    'project4-frontend.railway.internal'
+    'https://project4-frontend-production-dadf.up.railway.app/',
+    'project4-frontend.railway.internal',
+    'localhost'
 ]
 
 
@@ -63,8 +65,19 @@ INSTALLED_APPS = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://localhost:8000',
-    'https://project4-frontend-production-dadf.up.railway.app/'
+    'https://project4-frontend-production-dadf.up.railway.app/',
+    'https://project4-backend-production-98e2.up.railway.app'
 ]
+
+# CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "POST",
+    "PUT",
+)
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -77,26 +90,26 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
 
+    'https://project4-frontend.railway.internal',
+    'https://project4-frontend-production-dadf.up.railway.app/',
+    'https://project4-backend-production-98e2.up.railway.app',
+    'https://*project4-backend-production-98e2.up.railway.app',
+    'https://*.railway.app/'
+]
 
 # CORS_ALLOW_ALL_ORIGINS = True
 
-# CORS_ALLOW_METHODS = (
-#     "DELETE",
-#     "GET",
-#     "OPTIONS",
-#     "POST",
-#     "PUT",
-# )
 
-# CORS_ALLOW_HEADERS = (
-#     "accept",
-#     "authorization",
-#     "content-type",
-#     "user-agent",
-#     "x-csrftoken",
-#     "x-requested-with",
-# )
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+)
 
 ROOT_URLCONF = 'backend.urls'
 

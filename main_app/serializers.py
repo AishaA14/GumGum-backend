@@ -21,11 +21,6 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         model = Group
         fields = ['url', 'name']
 
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = '__all__'
-
 class GoalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Goal
@@ -37,12 +32,13 @@ class HabitSerializer(serializers.ModelSerializer):
         model = Habit
         fields = '__all__'
 
-# class CompletedGoalSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CompletedGoal
-#         fields = '__all__'
-
 class CompletedHabitSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompletedHabit
         fields = '__all__'
+        
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = '__all__'
+        read_only_fields = ['user']
