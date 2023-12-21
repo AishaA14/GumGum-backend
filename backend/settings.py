@@ -65,8 +65,8 @@ INSTALLED_APPS = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://localhost:8000',
-    'https://project4-frontend-production-dadf.up.railway.app/',
-    'https://project4-backend-production-98e2.up.railway.app'
+    # 'https://project4-frontend-production-dadf.up.railway.app/',
+    # 'https://project4-backend-production-98e2.up.railway.app'
 ]
 
 # CORS_ALLOW_ALL_ORIGINS = True
@@ -77,6 +77,7 @@ CORS_ALLOW_METHODS = (
     "OPTIONS",
     "POST",
     "PUT",
+    "PATCH"
 )
 
 MIDDLEWARE = [

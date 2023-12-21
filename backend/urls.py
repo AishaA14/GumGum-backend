@@ -25,10 +25,9 @@ from main_app.views import HabitListCreateView, HabitDetailViewSet, CompletedHab
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'tag', views.TagViewSet)
 router.register(r'goal', views.GoalViewSet)
 router.register(r'task', views.TaskViewSet)
-router.register(r'habit', views.HabitViewSet)
+router.register(r'habit', views.HabitDetailViewSet)
 router.register(r'completed_habits', CompletedHabitViewSet, basename='completed_habits')
 
 

@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .serializers import *
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_jwt.utils import jwt_decode_handler
+# from rest_framework_jwt.utils import jwt_decode_handler
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
@@ -52,40 +52,33 @@ class GoalViewSet(viewsets.ModelViewSet):
     serializer_class = GoalSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        user = self.request.user
+        return Goal.objects.filter(user=user)
+
 class GoalCreate(generics.CreateAPIView):
     queryset = Goal.objects.all()
     serializer_class = GoalSerializer
 
-    # def perform_create(self, serializer):
-    #     serializer.save(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
-    def create(self, request, *args, **kwargs):
-        user_id = decode_token(request)  # Use the decode_token function
-        if user_id:
-            request.data['user'] = user_id  # Associate user ID with the goal
-            return super().create(request, *args, **kwargs)
-        else:
-            return Response({'detail': 'Invalid or missing token'}, status=status.HTTP_401_UNAUTHORIZED)
-
+    
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        user = self.request.user
+        return Task.objects.filter(user=user)
+
 class TaskCreate(generics.CreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
-    # def perform_create(self, serializer):
-    #     serializer.save(user=self.request.user)
-
-    def create(self, request, *args, **kwargs):
-        user_id = decode_token(request)  # Use the decode_token function
-        if user_id:
-            request.data['user'] = user_id  # Associate user ID with the goal
-            return super().create(request, *args, **kwargs)
-        else:
-            return Response({'detail': 'Invalid or missing token'}, status=status.HTTP_401_UNAUTHORIZED)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class HabitListCreateView(generics.ListCreateAPIView):
@@ -133,11 +126,11 @@ class CompletedHabitViewSet(viewsets.ModelViewSet):
     serializer_class = CompletedHabitSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-def decode_token(request):
-    authorization_header = request.headers.get('Authorization')
-    if authorization_header:
-        token = authorization_header.split(' ')[1]
-        decoded_token = jwt_decode_handler(token)
-        user_id = decoded_token['user_id']
-        return user_id
-    return None
+# def decode_token(request):
+#     authorization_header = request.headers.get('Authorization')
+#     if authorization_header:
+#         token = authorization_header.split(' ')[1]
+#         decoded_token = jwt_decode_handler(token)
+#         user_id = decoded_token['user_id']
+#         return user_id
+#     return None
