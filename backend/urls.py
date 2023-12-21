@@ -31,7 +31,6 @@ router.register(r'habit', views.HabitDetailViewSet)
 router.register(r'completed_habits', CompletedHabitViewSet, basename='completed_habits')
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('token/', jwt_views.TokenObtainPairView.as_view(), name ='token_obtain_pair'),

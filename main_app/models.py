@@ -25,7 +25,15 @@ class CompletedHabit(models.Model):
     count = models.IntegerField()
 
 class Task(models.Model):
+    completed_at = models.DateTimeField(auto_now_add=True)
+    count = models.IntegerField()
+
+class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    is_completed = models.BooleanField(default=False)
     title = models.CharField(max_length=255)
     description = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
