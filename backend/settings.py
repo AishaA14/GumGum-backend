@@ -227,4 +227,4 @@ SIMPLE_JWT = {
 #     'django.contrib.auth.backends.ModelBackend',
 # ]
 
-#test 
+#test 2
